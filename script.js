@@ -1,30 +1,77 @@
 
-/* Sports Probability Lab
-   Probability Engine - Version 1.0
+/* SPORTS PROBABILITY LAB
+   Probability Engine - Version 1.1
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Sports Probability Lab initialized!");
 
-  function poissonProbability(goals, expectedGoals) {
-    let factorial = 1;
+  // Calculate factorial
+  function factorial(n) {
+    let result = 1;
 
-    for (let i = 2; i <= goals; i++) {
-      factorial *= i;
+    for (let i = 2; i <= n; i++) {
+      result *= i;
     }
 
+    return result;
+  }
+
+  // Poisson probability formula
+  function poissonProbability(goals, expectedGoals) {
     return (
       Math.exp(-expectedGoals) *
       Math.pow(expectedGoals, goals) /
-      factorial
+      factorial(goals)
     );
   }
 
-  // Initial test: probability of scoring 2 goals
-  const result = poissonProbability(2, 1.5);
+  // Connect calculator to dashboard
+  const calculateBtn = document.getElementById("calculateBtn");
 
-  console.log(
-    "Probability of scoring exactly 2 goals:",
-    (result * 100).toFixed(2) + "%"
-  );
+  calculateBtn.addEventListener("click", () => {
+
+    const expectedGoals = Number(
+      document.getElementById("expectedGoals").value
+    );
+
+    const goalCount = Number(
+      document.getElementById("goalCount").value
+    );
+
+    const resultElement = document.getElementById("probabilityResult");
+
+    // Validate inputs
+    if (
+      !Number.isFinite(expectedGoals) ||
+      expectedGoals < 0 ||
+      expectedGoals > 10 ||
+      !Number.isInteger(goalCount) ||
+      goalCount < 0 ||
+      goalCount > 20 ||
+      document.getElementById("expectedGoals").value.trim() === "" ||
+      document.getElementById("goalCount").value.trim() === ""
+    ) {
+      resultElement.textContent =
+        "Please enter valid values for expected goals and goal count.";
+      return;
+    }
+
+    // Calculate probability
+    const probability = poissonProbability(
+      goalCount,
+      expectedGoals
+    );
+
+    // Display result
+    resultElement.innerHTML = `
+      <h4>Probability Result</h4>
+      <p>
+        Probability of scoring exactly
+        <strong>${goalCount} goals</strong>:
+      </p>
+      <h2>${(probability * 100).toFixed(2)}%</h2>
+    `;
+
+  });
+
 });
