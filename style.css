@@ -1,0 +1,16 @@
+
+/* Sports Probability Lab - Main Styles */
+
+:root {
+  --background: #0b1120;
+  --card: #151e30;
+  --accent: #38bdf8;
+  --text: #f8fafc;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
